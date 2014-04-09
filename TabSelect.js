@@ -17,8 +17,6 @@ function TAB_SELECT(tabClass, options) { // 以 <div class="tabLayer" data-title
 
 	this.init = function (tabClass) {
 		var that = this;
-		$(document.body).css({padding: '0px', margin: '0px'});
-		this.element = $('<div/>').prependTo($(document.body)).css({paddingTop: this.options.elementPaddingTop, backgroundColor: this.options.elementBackgroundColor});
 		$('.' + tabClass).each(function (idx) {
 			that.tabs.push({label: $(this).data('title') || 'TAB ' + idx}); // 無data-title屬性的話, 預設用'TAB '+idx當檢籤名
 			var div = $(this).css({padding: that.options.divPadding});
@@ -27,7 +25,11 @@ function TAB_SELECT(tabClass, options) { // 以 <div class="tabLayer" data-title
 			}
 			that.divs.push(div);
 		});
-		this.render();
+		if (this.tabs.length) {
+			this.element = $('<div/>').prependTo($(document.body)).css({paddingTop: this.options.elementPaddingTop, backgroundColor: this.options.elementBackgroundColor});
+			$(document.body).css({padding: '0px', margin: '0px'});
+			this.render();
+		}
 	};
 	this.preventDefault = function (event) {
 		event.preventDefault();
@@ -39,8 +41,8 @@ function TAB_SELECT(tabClass, options) { // 以 <div class="tabLayer" data-title
 			_nobr,
 			i;
 		for (i = 0; i < this.tabs.length; i++) {
-			$('<td/>', {width: 10}).css({borderBottom: '1px solid ' + this.options.borderColor, padding: '0px'})
-				.text('\u00a0').appendTo(_tr); // 間隙
+			$('<td/>', {width: 10}).css({fontSize: '4px', borderBottom: '1px solid ' + this.options.borderColor, padding: '0px'})
+				.text(i === 0 ? '\u00a0\u00a0\u00a0\u00a0\u00a0' : '\u00a0').appendTo(_tr); // 間隙
 
 			this.tabs[i].td = $('<td/>').css(this.getTabStyle(i === this.currentIdx)).appendTo(_tr)
 				.bind('click', {obj: this, idx:i}, this.changeTab)

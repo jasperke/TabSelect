@@ -35,9 +35,9 @@ function TAB_SELECT(tabClass, options) { // 以 <div class="tabLayer" data-title
 		event.preventDefault();
 	};
 	this.render = function () {
-		var _table = $('<table/>', {width: '100%', cellSpacing: 0, cellPadding: 2, border: 0}).appendTo(this.element),
+		var _table = $('<table/>', {width: '100%', cellSpacing: 0, cellPadding: 2, border: 0}).css({borderCollapse:'separate'}).appendTo(this.element),
 			_tbody = $('<tbody/>').appendTo(_table),
-			_tr = $('<tr/>').appendTo(_tbody),
+			_tr = $('<tr/>').appendTo(_tbody).css({background:this.options.elementBackgroundColor}),
 			_nobr,
 			i;
 		for (i = 0; i < this.tabs.length; i++) {

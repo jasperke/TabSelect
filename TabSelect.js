@@ -86,3 +86,25 @@ function TAB_SELECT(tabClass, options) { // 以 <div class="tabLayer" data-title
 	};
 	this.init(tabClass);
 }
+TAB_SELECT.prepareTab = function(rawHtml){
+	var div,
+		tabs = ['Home'],
+		tabs_kind = [''],
+		sections;
+
+	div = $('<div/>').html(rawHtml);
+	div.find('div.tabSepratorDiv').each(function(){
+		tabs.push($(this).html());
+		tabs_kind.push($(this).data('tabkind'));
+		$(this).parent().parent().parent().replaceWith($('<tab_seprator/>'));
+	});
+	if(tabs.length > 1){ // 預設tabs會存一個'Home', 超過1則須分tab標籤頁
+		sections = div.html().split('<tab_seprator></tab_seprator>');
+		sections[0] = sections[0].replace('<meta charset="utf-8">', '<meta charset="utf-8"><div class="tabLayer" data-title="' + tabs[0] + '">') + '</div>';
+		for(var i = 1; i < sections.length; i++){
+			sections[i] = '<div class="tabLayer" data-title="' + tabs[i] + '" data-tabkind="' + tabs_kind[i] + '"' + (tabs_kind[i] != ''?' id="' + tabs_kind[i] + '"':'') + '>' + sections[i] + '</div>';
+		}
+		rawHtml = sections.join("");
+	}
+	return rawHtml;
+};
